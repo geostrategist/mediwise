@@ -7,8 +7,9 @@ import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, resolve } from 'node:path'
 
-const __dirname = dirname(fileURLToPath(import.meta.url))
-const EMBEDDINGS_PATH = resolve(__dirname, 'embeddings.json')
+// Avoid manually naming `__dirname` — esbuild auto-injects it when bundling for
+// Netlify Functions, causing a "already declared" SyntaxError on cold start.
+const EMBEDDINGS_PATH = resolve(dirname(fileURLToPath(import.meta.url)), 'embeddings.json')
 
 // Lazy-load embeddings once per function cold start.
 let EMB = null
