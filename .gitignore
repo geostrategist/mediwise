@@ -1,4 +1,13 @@
 node_modules
 dist
 .env
+.env.local
+.netlify
 .DS_Store
+deno.lock
+
+# Raw open-data downloads (40-90MB each, regenerable)
+scripts/cache/
+
+# embeddings.json IS committed for production Netlify Function.
+# Rebuild after data changes with: npm run embeddings

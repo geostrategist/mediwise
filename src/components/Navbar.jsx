@@ -41,6 +41,11 @@ export default function Navbar() {
               <span className="nav-icon">🩺</span>症狀分析
             </NavLink>
           </li>
+          <li>
+            <NavLink to="/ask" className={({ isActive }) => isActive ? 'active' : ''}>
+              <span className="nav-icon">🤖</span>AI 問答
+            </NavLink>
+          </li>
         </ul>
 
         <div className="navbar-emergency">

@@ -5,6 +5,7 @@ import Home from './pages/Home'
 import DrugInfo from './pages/DrugInfo'
 import HealthEdu from './pages/HealthEdu'
 import BodyCheck from './pages/BodyCheck'
+import Ask from './pages/Ask'
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
         <Route path="/drugs" element={<DrugInfo />} />
         <Route path="/health" element={<HealthEdu />} />
         <Route path="/check" element={<BodyCheck />} />
+        <Route path="/ask" element={<Ask />} />
       </Routes>
       <Footer />
     </HashRouter>
