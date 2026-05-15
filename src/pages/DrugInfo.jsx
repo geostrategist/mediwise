@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import { drugs, drugCategories, drugTags } from '../data/drugs'
 import DrugModal from '../components/DrugModal'
 import TfdaDrugModal from '../components/TfdaDrugModal'
@@ -7,11 +7,67 @@ import NhiDrugModal from '../components/NhiDrugModal'
 const TFDA_PAGE_SIZE = 60
 const NHI_PAGE_SIZE = 60
 
+// 將使用者選的照片在瀏覽器端縮圖+壓縮，避免上傳數 MB 的原始相片。
+function fileToCompressedBase64(file, maxDim = 1024, quality = 0.8) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file)
+    const img = new Image()
+    img.onload = () => {
+      URL.revokeObjectURL(url)
+      let { width, height } = img
+      if (width > maxDim || height > maxDim) {
+        const scale = maxDim / Math.max(width, height)
+        width = Math.round(width * scale)
+        height = Math.round(height * scale)
+      }
+      const canvas = document.createElement('canvas')
+      canvas.width = width
+      canvas.height = height
+      canvas.getContext('2d').drawImage(img, 0, 0, width, height)
+      resolve(canvas.toDataURL('image/jpeg', quality).replace(/^data:image\/jpeg;base64,/, ''))
+    }
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('無法讀取這張圖片')) }
+    img.src = url
+  })
+}
+
 function CuratedDrugsTab() {
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState('全部')
   const [tag, setTag] = useState('全部')
   const [selected, setSelected] = useState(null)
+  const [identifying, setIdentifying] = useState(false)
+  const [identifyMsg, setIdentifyMsg] = useState(null)
+  const fileInputRef = useRef(null)
+
+  async function handlePhoto(e) {
+    const file = e.target.files?.[0]
+    e.target.value = '' // 允許重新選同一張
+    if (!file) return
+    setIdentifyMsg(null)
+    setIdentifying(true)
+    try {
+      const image = await fileToCompressedBase64(file)
+      const res = await fetch('/api/identify', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ image, mimeType: 'image/jpeg' }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`)
+      if (data.drugId) {
+        const drug = drugs.find(d => d.id === data.drugId)
+        setSelected(drug)
+        setIdentifyMsg({ type: 'success', text: `已辨識為「${drug.name}」（把握度：${data.confidence}）—— 已為你開啟詳情。` })
+      } else {
+        setIdentifyMsg({ type: 'nomatch', text: data.reason || '無法從照片辨識出精選 20 種中的藥品，請改用文字搜尋。' })
+      }
+    } catch (err) {
+      setIdentifyMsg({ type: 'error', text: `辨識失敗：${String(err.message ?? err)}` })
+    } finally {
+      setIdentifying(false)
+    }
+  }
 
   const filtered = useMemo(() => {
     return drugs.filter(d => {
@@ -29,16 +85,64 @@ function CuratedDrugsTab() {
 
   return (
     <>
-      <div className="search-wrapper">
-        <span className="search-icon">🔍</span>
+      <div style={{ display: 'flex', gap: '0.6rem', alignItems: 'stretch', marginBottom: '1rem' }}>
+        <div className="search-wrapper" style={{ flex: 1, marginBottom: 0 }}>
+          <span className="search-icon">🔍</span>
+          <input
+            className="search-input"
+            type="text"
+            placeholder="輸入藥品名稱、品牌名、症狀或藥品功效..."
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+          />
+        </div>
+        <button
+          type="button"
+          className="btn btn-teal"
+          onClick={() => fileInputRef.current?.click()}
+          disabled={identifying}
+          style={{ flexShrink: 0, opacity: identifying ? 0.65 : 1 }}
+        >
+          {identifying ? '⏳ 辨識中…' : '📷 用相片辨識'}
+        </button>
         <input
-          className="search-input"
-          type="text"
-          placeholder="輸入藥品名稱、品牌名、症狀或藥品功效..."
-          value={query}
-          onChange={e => setQuery(e.target.value)}
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          capture="environment"
+          onChange={handlePhoto}
+          style={{ display: 'none' }}
         />
       </div>
+
+      {identifyMsg && (
+        <div
+          style={{
+            display: 'flex',
+            gap: '0.6rem',
+            alignItems: 'flex-start',
+            padding: '0.75rem 1rem',
+            marginBottom: '1.25rem',
+            borderRadius: 'var(--radius)',
+            fontSize: '0.83rem',
+            lineHeight: 1.55,
+            background: identifyMsg.type === 'success' ? '#f0fdfa' : identifyMsg.type === 'error' ? '#fef2f2' : '#fffbeb',
+            border: `1px solid ${identifyMsg.type === 'success' ? '#99f6e4' : identifyMsg.type === 'error' ? '#fecaca' : '#fde68a'}`,
+            color: identifyMsg.type === 'success' ? '#0f766e' : identifyMsg.type === 'error' ? '#991b1b' : '#92400e',
+          }}
+        >
+          <span style={{ flexShrink: 0 }}>
+            {identifyMsg.type === 'success' ? '✅' : identifyMsg.type === 'error' ? '⚠️' : '🔍'}
+          </span>
+          <span style={{ flex: 1 }}>{identifyMsg.text}</span>
+          <button
+            onClick={() => setIdentifyMsg(null)}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'inherit', fontSize: '0.9rem', flexShrink: 0 }}
+          >
+            ✕
+          </button>
+        </div>
+      )}
 
       <div className="filter-row">
         {drugCategories.map(c => (
