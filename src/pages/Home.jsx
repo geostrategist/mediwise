@@ -150,6 +150,65 @@ export default function Home() {
           </div>
         </div>
 
+        {/* AI 可解釋性說明 */}
+        <div className="card" style={{ padding: '2rem', marginBottom: '2rem' }}>
+          <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>🔍</div>
+          <h3 style={{ marginBottom: '0.5rem', fontSize: '1.15rem' }}>AI 可解釋性設計</h3>
+          <p style={{ fontSize: '0.875rem', color: '#334155', lineHeight: 1.7, marginBottom: '0.25rem' }}>
+            本平台的每項 AI 功能都讓使用者看得到「為什麼這樣判斷」，而非只給出黑箱結果。
+            可解釋性（Explainability）能幫助民眾核對資訊、建立信任，也避免過度依賴 AI。
+          </p>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))',
+              gap: '1rem',
+              marginTop: '1.25rem',
+            }}
+          >
+            {[
+              {
+                icon: '🩺',
+                title: '症狀分析 — 白箱規則引擎',
+                desc: '不是黑箱模型，而是公開的規則比對。結果會攤開命中的規則、計算「符合程度」分數，並標示你勾選的哪些症狀是判斷依據、哪些不是。',
+                color: '#ea580c',
+                bg: '#fff7ed',
+              },
+              {
+                icon: '🤖',
+                title: 'AI 問答 — 檢索接地（RAG）',
+                desc: '回答僅依據知識庫檢索到的內容生成，每段話標註 [1][2] 引用來源並附相似度分數，使用者可回溯原始資料、查核正確性。',
+                color: '#0d9488',
+                bg: '#f0fdfa',
+              },
+              {
+                icon: '📷',
+                title: '相片辨識 — 信心度與理由',
+                desc: '辨識藥品時回傳「高/中/低」把握程度，並以文字說明從照片看到哪些線索；把握不足時主動回報「無法辨識」，不硬猜。',
+                color: '#2563eb',
+                bg: '#eff6ff',
+              },
+            ].map(item => (
+              <div
+                key={item.title}
+                style={{
+                  background: item.bg,
+                  borderRadius: 'var(--radius)',
+                  padding: '1.1rem 1.15rem',
+                }}
+              >
+                <div style={{ fontSize: '1.4rem', marginBottom: '0.4rem' }}>{item.icon}</div>
+                <div style={{ fontSize: '0.9rem', fontWeight: 700, color: item.color, marginBottom: '0.35rem' }}>
+                  {item.title}
+                </div>
+                <p style={{ fontSize: '0.8rem', color: '#475569', lineHeight: 1.65, margin: 0 }}>
+                  {item.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Warning Banner */}
         <div
           style={{

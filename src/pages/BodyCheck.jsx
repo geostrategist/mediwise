@@ -1,15 +1,28 @@
 import { useState, useMemo } from 'react'
 import { symptomGroups, analysisRules, defaultResult } from '../data/symptoms'
 
+// 回傳命中規則並附上 explain 物件，攤開判斷依據（可解釋性）。
 function analyze(selected) {
   if (selected.length === 0) return null
 
   for (const rule of analysisRules) {
-    const matchCount = rule.symptoms.filter(s => selected.includes(s)).length
-    if (matchCount >= 2) return rule
-    if (rule.symptoms.length === 1 && selected.includes(rule.symptoms[0])) return rule
+    const matched = rule.symptoms.filter(s => selected.includes(s))
+    const isSingle = rule.symptoms.length === 1
+    const triggered = matched.length >= 2 || (isSingle && matched.length === 1)
+    if (!triggered) continue
+    return {
+      ...rule,
+      explain: {
+        matched,
+        unmatched: rule.symptoms.filter(s => !selected.includes(s)),
+        total: rule.symptoms.length,
+        score: Math.round((matched.length / rule.symptoms.length) * 100),
+        trigger: isSingle ? 'single' : 'multi',
+        extra: selected.filter(s => !rule.symptoms.includes(s)),
+      },
+    }
   }
-  return defaultResult
+  return { ...defaultResult, explain: null }
 }
 
 export default function BodyCheck() {
@@ -141,28 +154,76 @@ export default function BodyCheck() {
                     </div>
                   </div>
 
-                  {/* Selected Symptoms Summary */}
-                  <div style={{ marginBottom: '1rem' }}>
-                    <div style={{ fontSize: '0.78rem', color: '#64748b', marginBottom: '0.4rem', fontWeight: 600 }}>
-                      您選擇的症狀：
-                    </div>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem' }}>
-                      {selected.map(s => (
-                        <span
-                          key={s}
-                          style={{
-                            fontSize: '0.75rem',
-                            padding: '0.2rem 0.65rem',
-                            background: '#f1f5f9',
-                            borderRadius: '999px',
-                            color: '#475569',
-                          }}
-                        >
-                          {s}
+                  {/* 判斷依據（可解釋性） */}
+                  {result.explain ? (
+                    <div className="explain-box">
+                      <div className="explain-title">🔍 判斷依據（可解釋性）</div>
+
+                      <div className="explain-score">
+                        <span className="explain-score-label">符合程度</span>
+                        <div className="explain-bar">
+                          <div
+                            className="explain-bar-fill"
+                            style={{ width: `${result.explain.score}%`, background: result.color }}
+                          />
+                        </div>
+                        <span className="explain-pct" style={{ color: result.color }}>
+                          {result.explain.score}%
                         </span>
-                      ))}
+                      </div>
+                      <p className="explain-line">
+                        此判斷對應一條關注 <strong>{result.explain.total}</strong> 項症狀的規則，
+                        你勾選的症狀符合其中 <strong>{result.explain.matched.length}</strong> 項。
+                      </p>
+
+                      <div className="explain-sub">規則關注的症狀（✓ 為你的判斷依據）：</div>
+                      <div className="explain-chips">
+                        {result.explain.matched.map(s => (
+                          <span key={s} className="explain-chip hit">✓ {s}</span>
+                        ))}
+                        {result.explain.unmatched.map(s => (
+                          <span key={s} className="explain-chip miss">✗ {s}</span>
+                        ))}
+                      </div>
+
+                      <p className="explain-line">
+                        <strong>觸發方式：</strong>
+                        {result.explain.trigger === 'single'
+                          ? '此為高風險「紅旗症狀」，只要偵測到 1 項即觸發最高層級就醫建議。'
+                          : '此為多症狀規則，勾選符合其中 ≥ 2 項即觸發。'}
+                      </p>
+                      <p className="explain-line">
+                        <strong>判斷順序：</strong>系統將 {analysisRules.length} 條規則依嚴重度由高到低
+                        排列、逐條比對，上方為第一條達到觸發門檻的規則，因此優先於其他較輕症的可能。
+                      </p>
+
+                      {result.explain.extra.length > 0 && (
+                        <>
+                          <div className="explain-sub">你另外勾選、但不屬於此規則判斷依據的症狀：</div>
+                          <div className="explain-chips">
+                            {result.explain.extra.map(s => (
+                              <span key={s} className="explain-chip extra">{s}</span>
+                            ))}
+                          </div>
+                        </>
+                      )}
                     </div>
-                  </div>
+                  ) : (
+                    <div className="explain-box">
+                      <div className="explain-title">🔍 判斷依據（可解釋性）</div>
+                      <p className="explain-line">
+                        你勾選的症狀組合未對應到系統 {analysisRules.length} 條規則中的任何一條觸發條件
+                        （多症狀規則需符合 ≥ 2 項、紅旗症狀需 1 項）。
+                        因此系統不臆測病因，改建議由醫師綜合評估。
+                      </p>
+                      <div className="explain-sub">你勾選的症狀：</div>
+                      <div className="explain-chips">
+                        {selected.map(s => (
+                          <span key={s} className="explain-chip extra">{s}</span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
                   <div className="disclaimer-box">
                     ⚕️ 此分析結果僅供參考，由規則引擎生成，非醫師診斷。

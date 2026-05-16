@@ -1606,3 +1606,94 @@ a:hover { color: var(--primary-dark); }
     flex-basis: auto;
   }
 }
+
+/* ══ 症狀分析 — 判斷依據（可解釋性）═══════════════ */
+.explain-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.explain-title {
+  font-size: 0.85rem;
+  font-weight: 800;
+  margin-bottom: 0.75rem;
+}
+
+.explain-score {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.explain-score-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.explain-bar {
+  flex: 1;
+  height: 9px;
+  background: var(--border);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.explain-bar-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 0.3s ease;
+}
+
+.explain-pct {
+  font-size: 0.95rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.explain-line {
+  font-size: 0.8rem;
+  color: var(--text-2);
+  line-height: 1.7;
+  margin: 0.55rem 0 0;
+}
+
+.explain-sub {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-top: 0.65rem;
+  margin-bottom: 0.35rem;
+}
+
+.explain-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.explain-chip {
+  font-size: 0.76rem;
+  padding: 0.22rem 0.62rem;
+  border-radius: var(--radius-full);
+  font-weight: 500;
+}
+
+.explain-chip.hit {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.explain-chip.miss {
+  background: #f1f5f9;
+  color: #94a3b8;
+}
+
+.explain-chip.extra {
+  background: #fef3c7;
+  color: #92400e;
+}
