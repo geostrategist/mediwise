@@ -60,7 +60,7 @@ export default function NhiDrugModal({ drug, onClose }) {
             </div>
           )}
 
-          {drug.price && (
+          {Number(drug.price) > 0 && (
             <div className="info-section">
               <div className="info-label">💰 健保支付價</div>
               <div className="info-text" style={{ fontSize: '1.25rem', fontWeight: 700, color: '#0d9488' }}>

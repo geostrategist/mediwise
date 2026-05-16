@@ -398,7 +398,7 @@ function TfdaDrugsTab() {
             <div style={{ textAlign: 'center', marginTop: '1.5rem' }}>
               <button
                 onClick={() => setVisible(v => v + TFDA_PAGE_SIZE)}
-                className="btn btn-outline"
+                className="btn btn-more"
               >
                 顯示更多（還有 {filtered.length - pageDrugs.length} 筆）
               </button>
@@ -567,8 +567,8 @@ function NhiDrugsTab() {
                   )}
                   <div style={{ fontSize: '0.72rem', color: '#94a3b8', marginTop: '0.2rem' }}>代號 {drug.code}</div>
                 </div>
-                <div style={{ fontSize: '0.85rem', color: '#0d9488', fontWeight: 700, marginTop: '0.3rem' }}>
-                  💰 NT$ {drug.price || '—'}
+                <div style={{ fontSize: '0.85rem', color: Number(drug.price) > 0 ? '#0d9488' : '#94a3b8', fontWeight: 700, marginTop: '0.3rem' }}>
+                  {Number(drug.price) > 0 ? `💰 NT$ ${drug.price}` : '💰 健保價未列'}
                   {drug.spec && <span style={{ color: '#94a3b8', fontWeight: 400, marginLeft: '0.4rem', fontSize: '0.75rem' }}>/ {drug.spec}</span>}
                 </div>
                 <div className="drug-card-footer">
@@ -585,7 +585,7 @@ function NhiDrugsTab() {
 
           {pageDrugs.length < filtered.length && (
             <div style={{ textAlign: 'center', marginTop: '1.5rem' }}>
-              <button onClick={() => setVisible(v => v + NHI_PAGE_SIZE)} className="btn btn-outline">
+              <button onClick={() => setVisible(v => v + NHI_PAGE_SIZE)} className="btn btn-more">
                 顯示更多（還有 {filtered.length - pageDrugs.length} 筆）
               </button>
             </div>

@@ -90,13 +90,16 @@ for (const r of withRule) {
 }
 console.log(`  unique ingredients: ${byIngredient.size}`)
 
+// 0 元或空白的支付價視為「無價格」(Infinity)，排序時排到最後，
+// 避免同成分去重時挑到 0 元品項當代表（健保 CSV 有 3 萬餘筆 0 元/空白）。
 function priceNum(s) {
   const n = Number(String(s ?? '').replace(/[, ]/g, ''))
-  return Number.isFinite(n) ? n : Infinity
+  return Number.isFinite(n) && n > 0 ? n : Infinity
 }
 
 const reps = []
 for (const [key, group] of byIngredient) {
+  // 優先挑「有實際支付價」中最便宜者；整組皆無價格時才回退第一筆。
   group.sort((a, b) => priceNum(a['支付價']) - priceNum(b['支付價']))
   reps.push({ key, record: group[0], variantCount: group.length })
 }

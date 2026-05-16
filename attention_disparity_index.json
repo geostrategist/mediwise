@@ -1,0 +1,220 @@
+{
+  "evaluation_metadata": {
+    "as_of_date": "2026-05-16",
+    "region": "Taiwan",
+    "framework": "public_attention_weighted",
+    "data_sources": [
+      "Taiwan CDC press releases & 致醫界通函 601-606",
+      "Chinatimes, UDN, CTWANT, ETtoday, CNA, Newtalk, Taiwan News, RTI (May 2026)",
+      "CDC 澄清專區 (詐騙訊息間接反映恐慌)"
+    ]
+  },
+  "diseases": [
+    {
+      "name": "漢他病毒安地斯型 (Hantavirus Andes virus)",
+      "importance_score": 88,
+      "category": "high_attention",
+      "alert_level": "high",
+      "indicators": {
+        "case_count_domestic": 0,
+        "weekly_change": "N/A（境外事件、無本土病例）",
+        "case_fatality_rate": "35–50% (HPS)",
+        "transmissibility": "唯一具有限度人傳人能力的漢他病毒",
+        "cluster_event": true,
+        "cdc_alert": "已組成專案小組、召開專家諮詢會議、發布多次新聞稿",
+        "media_heat": "極高（連續一週為主要衛生新聞，多家媒體頭版）",
+        "search_trends": "高（民眾對人傳人特性高度關注）",
+        "social_discussion": "高（出現詐騙集團冒名『漢坦病毒防疫國家隊』需 CDC 澄清，為恐慌訊號）",
+        "public_panic": true
+      },
+      "public_attention_reason": "MV Hondius 國際郵輪境外群聚 3 死 11+ 例、紐西蘭籍乘客 5/7 入境台灣（已採檢陰性、加強型自主健康管理至 6/6）；具人傳人特性與高致死率，且台灣歷年從未檢出此型，恐慌敘事強。詐騙集團趁機行騙更顯示社群熱度與資訊不對稱。",
+      "short_summary": "境外輸入威脅 + 高致死率 + 人傳人潛能 + 媒體放大效應的典型 high_attention 案例；實際公衛風險目前為低，但社會關注度位居本週最高。"
+    },
+    {
+      "name": "麻疹 (Measles)",
+      "importance_score": 75,
+      "category": "outbreak",
+      "alert_level": "high",
+      "indicators": {
+        "case_count_domestic": "今年累計 7+ 例 (截至 4/14)，含 2 例本土感染",
+        "weekly_change": "近期持續新增境外移入並衍生群聚",
+        "case_fatality_rate": "已開發國家 <0.1%，但併發症（腦炎、肺炎）可致命",
+        "transmissibility": "極高 (R0 12-18)；空氣傳播",
+        "cluster_event": true,
+        "cdc_alert": "致醫界通函第 601 號；多次新聞稿",
+        "media_heat": "中高（每起群聚事件均見報）",
+        "search_trends": "中（家長族群高度關注）",
+        "social_discussion": "中高（疫苗接種、活動史足跡公布）",
+        "public_panic": false
+      },
+      "public_attention_reason": "已發生 4+ 起群聚事件，累計匡列接觸者超過 2,000 人（526 + 87 + 1,058 + 384）。全球麻疹疫情升溫（墨西哥 8,000+、美國 1,500+、日本近 7 年同期最高），亞洲多國持續流行，境外輸入壓力大。",
+      "short_summary": "符合 outbreak 定義：局部多起群聚 + 高傳染力 + 接觸者大量匡列；非全國流行但需密切防堵。"
+    },
+    {
+      "name": "腸病毒 (Enterovirus，含 D68 型)",
+      "importance_score": 72,
+      "category": "epidemic",
+      "alert_level": "medium",
+      "indicators": {
+        "case_count_domestic": "上週門急診 3,526 人次",
+        "weekly_change": "+16.5% (前週 3,027)",
+        "case_fatality_rate": "重症致死率 1.3–33.3% (依型別)",
+        "transmissibility": "高（幼托機構快速傳播）",
+        "cluster_event": true,
+        "cdc_alert": "致醫界通函第 602 號；5/5 新聞稿提醒進入好發季",
+        "media_heat": "中（家長社群熱議）",
+        "search_trends": "中高（每年季節性高峰）",
+        "social_discussion": "中（幼兒園家長 LINE 群組）",
+        "public_panic": false
+      },
+      "public_attention_reason": "已進入年度好發季，疫情上升趨勢明確；累計 4 例重症（含 D68 型 2 例），D68 型自上次流行已 3 年，羅一鈞署長公開提醒可能引起明顯流行。預估 6 月中達高峰，越南鄰國 EV71 已逾 26,000 例。",
+      "short_summary": "符合 epidemic 定義：病例週週增加、進入歷史季節高峰前期、有重症監測訊號；D68 型回流是本季最大風險因子。"
+    },
+    {
+      "name": "H7N7 新型A型流感 (本土首例禽傳人)",
+      "importance_score": 58,
+      "category": "monitoring",
+      "alert_level": "low",
+      "indicators": {
+        "case_count_domestic": 1,
+        "weekly_change": "0 (個案已出院、接觸者監測結束)",
+        "case_fatality_rate": "歷史 H7N7 約 1/90+ (個案多為輕症結膜炎)",
+        "transmissibility": "低；屬低病原性禽流感 (LPAI)",
+        "cluster_event": false,
+        "cdc_alert": "致醫界通函第 605 號；公衛風險評估為「低風險」",
+        "media_heat": "已退潮（4 月初為高峰）",
+        "search_trends": "已回落",
+        "social_discussion": "低",
+        "public_panic": false
+      },
+      "public_attention_reason": "4 月初為重大新聞事件（彰化 70 多歲鴨農首例本土禽傳人，匡列 33 名接觸者），但 5 月中已落幕。基因定序顯示與野鳥 H7 最相近、無禽傳人增強突變，研判偶發事件。",
+      "short_summary": "事件已實質結案，但因『首例本土禽傳人』之歷史意義仍須監測；現階段風險低於媒體先前報導所暗示之程度。"
+    },
+    {
+      "name": "立百病毒感染症 (Nipah Virus)",
+      "importance_score": 55,
+      "category": "monitoring",
+      "alert_level": "medium",
+      "indicators": {
+        "case_count_domestic": 0,
+        "weekly_change": 0,
+        "case_fatality_rate": "40–75%",
+        "transmissibility": "中 (接觸 + 人傳人有限度)",
+        "cluster_event": false,
+        "cdc_alert": "4/2 公告列為第五類法定傳染病；致醫界通函第 604 號",
+        "media_heat": "中低（公告當週短暫上升）",
+        "search_trends": "低",
+        "social_discussion": "低",
+        "public_panic": false
+      },
+      "public_attention_reason": "南亞印度、孟加拉持續發生病例，致死率極高且無疫苗或核准藥物；台灣以制度性預警（升級法傳）回應，國內無本土或境外移入病例。",
+      "short_summary": "公共衛生制度警戒升級，但社會關注度低；屬『高致命率 × 低當前風險』的監測類別。"
+    },
+    {
+      "name": "流行性腦脊髓膜炎 (Meningococcal meningitis)",
+      "importance_score": 50,
+      "category": "outbreak",
+      "alert_level": "medium",
+      "indicators": {
+        "case_count_domestic": "5/5 新增 2 例確定病例",
+        "weekly_change": "上升 (短期內 +2)",
+        "case_fatality_rate": "10–15% (即使治療下)",
+        "transmissibility": "中（飛沫傳播）",
+        "cluster_event": "需追蹤是否相關",
+        "cdc_alert": "5/5 新聞稿提醒注意呼吸道衛生",
+        "media_heat": "低（單則報導）",
+        "search_trends": "低",
+        "social_discussion": "低",
+        "public_panic": false
+      },
+      "public_attention_reason": "短期內 2 例為相對罕見的疾病警訊，疾管署公開呼籲注意；致死率高、可進展迅速，需密切追蹤。",
+      "short_summary": "醫學上具警示性但媒體關注度有限；屬『重要但未引爆』的 outbreak 類別。"
+    },
+    {
+      "name": "隱蔽性死亡野田病毒 CMNV (Covert Mortality Nodavirus)",
+      "importance_score": 45,
+      "category": "monitoring",
+      "alert_level": "low",
+      "indicators": {
+        "case_count_domestic": 0,
+        "weekly_change": 0,
+        "case_fatality_rate": "人類風險未知",
+        "transmissibility": "跨物種感染潛能 (主要影響水生動物)",
+        "cluster_event": false,
+        "cdc_alert": "致醫界通函第 606 號；5/12 召開專家會議並建立送驗機制",
+        "media_heat": "中（新興病原體話題）",
+        "search_trends": "中（名詞新穎引發好奇）",
+        "social_discussion": "中（PTT/Threads 討論新興病毒）",
+        "public_panic": false
+      },
+      "public_attention_reason": "新興水生動物病毒，可能造成跨物種人類感染；國內尚無人類個案，但疾管署主動建立送驗機制具預警意義。",
+      "short_summary": "典型的『提前部署型監測』；目前無實質疫情，但符合您框架中『因新穎性而有社群關注度』的特徵。"
+    },
+    {
+      "name": "季節性流感 (Seasonal Influenza, 2025–2026 季)",
+      "importance_score": 40,
+      "category": "monitoring",
+      "alert_level": "low",
+      "indicators": {
+        "case_count_domestic": "本季累計 380+ 重症、68+ 死亡 (高峰已過)",
+        "weekly_change": "下降 (脫離流行期)",
+        "case_fatality_rate": "重症致死率約 15–20%",
+        "transmissibility": "高",
+        "cluster_event": false,
+        "cdc_alert": "公費新冠+流感擴大接種至 2/28",
+        "media_heat": "低（季節性疲乏）",
+        "search_trends": "下降",
+        "social_discussion": "低",
+        "public_panic": false
+      },
+      "public_attention_reason": "本流感季高峰已於春節前後過去，目前進入退潮期；H3N2 為主要型別，未接種疫苗者佔重症 90%+。",
+      "short_summary": "雖是累計死亡數最高的單一疾病，但因季節性、可預期，公眾關注度反而低。"
+    },
+    {
+      "name": "登革熱 (Dengue Fever)",
+      "importance_score": 35,
+      "category": "monitoring",
+      "alert_level": "low",
+      "indicators": {
+        "case_count_domestic": "1 例本土 + 45+ 境外移入 (截至近期)",
+        "weekly_change": "緩升中（夏季前奏）",
+        "case_fatality_rate": "重症 <5%",
+        "transmissibility": "中（病媒蚊）",
+        "cluster_event": false,
+        "cdc_alert": "持續宣導『巡倒清刷』",
+        "media_heat": "低",
+        "search_trends": "低（南部民眾較高）",
+        "social_discussion": "低",
+        "public_panic": false
+      },
+      "public_attention_reason": "東南亞鄰國疫情持續嚴峻（柬埔寨、馬來西亞上升），境外移入壓力存在；台灣即將進入夏季高風險期，但目前社會關注尚未啟動。",
+      "short_summary": "未來 1–2 個月可能升級為 outbreak，目前仍屬前哨監測。"
+    },
+    {
+      "name": "COVID-19",
+      "importance_score": 30,
+      "category": "monitoring",
+      "alert_level": "low",
+      "indicators": {
+        "case_count_domestic": "持續監測中（已從法傳降階）",
+        "weekly_change": "穩定",
+        "case_fatality_rate": "<1%",
+        "transmissibility": "高",
+        "cluster_event": false,
+        "cdc_alert": "公費疫苗擴大接種已結束 (2/28)",
+        "media_heat": "極低",
+        "search_trends": "極低",
+        "social_discussion": "低（疫情疲乏）",
+        "public_panic": false
+      },
+      "public_attention_reason": "已從急性危機轉為常態化監測；新變異株 BA.3.2 偶有報導但未引起社會反應。",
+      "short_summary": "經典『疫情疲乏』案例：實際病例仍多，但社會關注度趨近基線。"
+    }
+  ],
+  "key_observations": {
+    "highest_attention_disparity": "漢他病毒安地斯型——國內 0 本土病例但公眾關注度最高，完美對應 high_attention 類別的設計意圖。",
+    "rising_concern": "腸病毒 D68 型——3 年來首次可能流行，需密切觀察未來 3–4 週。",
+    "fading_concern": "H7N7 與本季流感——已過媒體高峰、實質風險下降。",
+    "watch_items": "立百病毒、CMNV——制度性預警設置中，目前無病例但具有未來引爆潛能。"
+  }
+}

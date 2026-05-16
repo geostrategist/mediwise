@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { diseases, nhiPolicies } from '../data/diseases'
+import TrendingPanel from '../components/TrendingPanel'
 
 function DiseaseModal({ disease, onClose }) {
   if (!disease) return null
@@ -116,6 +117,12 @@ export default function HealthEdu() {
               }}
             >
               💡 點選任一疾病卡片，可查看完整的症狀、預防措施、流行狀況及就醫建議。
+            </div>
+
+            <TrendingPanel />
+
+            <div className="common-disease-head">
+              <h3>🦠 常見疾病一覽</h3>
             </div>
             <div className="disease-grid">
               {diseases.map(disease => (

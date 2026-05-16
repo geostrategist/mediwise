@@ -315,6 +315,19 @@ a:hover { color: var(--primary-dark); }
   transform: translateY(-1px);
 }
 
+/* 用於淺色背景的次要按鈕（如藥品列表「顯示更多」） */
+.btn-more {
+  background: var(--primary-pale);
+  color: var(--primary-dark);
+  border: 1.5px solid var(--primary-light);
+}
+
+.btn-more:hover {
+  background: var(--primary-light);
+  color: var(--primary-darker);
+  transform: translateY(-1px);
+}
+
 .btn-teal {
   background: var(--primary);
   color: #fff;
@@ -1249,4 +1262,347 @@ a:hover { color: var(--primary-dark); }
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-light);
+}
+
+/* ══ 流行疾病動態 ═══════════════════════════════ */
+.trending-section {
+  margin-bottom: 2.25rem;
+}
+
+.trending-section-head {
+  margin-bottom: 1.25rem;
+}
+
+.trending-section-head h3 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin: 0.5rem 0 0.35rem;
+}
+
+.trending-section-head p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.trending-source {
+  font-size: 0.72rem;
+  color: var(--text-light);
+  margin-top: 0.5rem;
+  line-height: 1.5;
+}
+
+.common-disease-head {
+  margin: 2.25rem 0 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.common-disease-head h3 {
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.trending-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.trending-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.35rem;
+  cursor: pointer;
+  transition: all var(--transition);
+  display: flex;
+  flex-direction: column;
+}
+
+.trending-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.trending-card-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+}
+
+.trending-icon {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.trending-name {
+  font-size: 1.02rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.trending-en {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-top: 0.1rem;
+}
+
+.trending-score {
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.trending-score-num {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--primary-dark);
+  line-height: 1;
+}
+
+.trending-score-cap {
+  font-size: 0.62rem;
+  color: var(--text-light);
+  margin-top: 0.15rem;
+}
+
+.trending-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.85rem;
+}
+
+.cat-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--radius-full);
+}
+
+.alert-badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+}
+
+.trending-mini-radar {
+  display: flex;
+  justify-content: center;
+  padding: 0.4rem 0;
+}
+
+.trending-meta-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin: 0.35rem 0 0.9rem;
+}
+
+.trending-meta-row > div {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.meta-k {
+  flex-shrink: 0;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.meta-v {
+  color: var(--text-2);
+}
+
+.trending-cta {
+  margin-top: auto;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+/* ── 雷達圖 SVG ─────────────────────────────── */
+.radar-svg {
+  width: 100%;
+  height: auto;
+  max-width: 260px;
+  overflow: visible;
+}
+
+.radar-ring {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 1;
+}
+
+.radar-axis {
+  stroke: var(--border-2);
+  stroke-width: 1;
+}
+
+.radar-label {
+  font-size: 11px;
+  font-weight: 600;
+  fill: var(--text-muted);
+}
+
+.radar-label-val {
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.radar-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+
+.radar-wrap .radar-svg {
+  flex: 0 0 240px;
+  margin: 0 auto;
+}
+
+.radar-metrics {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.radar-metric-top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-2);
+  margin-bottom: 0.25rem;
+}
+
+.radar-bar {
+  height: 7px;
+  background: var(--border);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.radar-bar-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+}
+
+/* ── 為何上榜 ───────────────────────────────── */
+.reason-box {
+  background: var(--bg);
+  border-radius: var(--radius);
+  padding: 0.9rem 1rem;
+}
+
+.reason-title {
+  font-size: 0.82rem;
+  font-weight: 800;
+  margin-bottom: 0.4rem;
+}
+
+.reason-box p {
+  font-size: 0.83rem;
+  color: var(--text-2);
+  line-height: 1.7;
+  margin: 0;
+}
+
+.reason-summary {
+  margin-top: 0.5rem !important;
+  color: var(--text-muted) !important;
+  font-size: 0.8rem !important;
+}
+
+/* ── 資訊膠囊 ───────────────────────────────── */
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.info-chip {
+  font-size: 0.78rem;
+  padding: 0.28rem 0.7rem;
+  border-radius: var(--radius-full);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.chip-symptom { background: #fee2e2; color: #991b1b; }
+.chip-route   { background: #fef3c7; color: #92400e; }
+.chip-group   { background: #e0e7ff; color: #3730a3; }
+.chip-region  { background: #e0f2fe; color: #075985; }
+
+/* ── 行為建議卡 ─────────────────────────────── */
+.action-card {
+  display: flex;
+  gap: 0.7rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.85rem 1rem;
+  margin-top: 0.6rem;
+}
+
+.action-card:first-of-type {
+  margin-top: 0;
+}
+
+.action-icon {
+  font-size: 1.3rem;
+  line-height: 1.4;
+  flex-shrink: 0;
+}
+
+.action-title {
+  font-size: 0.84rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.action-card p {
+  font-size: 0.82rem;
+  color: var(--text-2);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ── 社群擴散防護 ───────────────────────────── */
+.household-alert {
+  background: linear-gradient(135deg, #f0fdfa, #ccfbf1);
+  border: 1px solid var(--primary-light);
+  border-radius: var(--radius);
+  padding: 0.95rem 1.1rem;
+}
+
+.household-title {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--primary-darker);
+  margin-bottom: 0.4rem;
+}
+
+.household-alert p {
+  font-size: 0.83rem;
+  color: var(--text-2);
+  line-height: 1.7;
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .trending-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .radar-wrap .radar-svg {
+    flex-basis: auto;
+  }
 }

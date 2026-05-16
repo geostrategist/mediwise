@@ -13,8 +13,11 @@
 
 - 四大頁面：首頁、藥品資訊（精選 20 種 / 食藥署 OTC 2,188 / 健保 3,348）、衛教資訊、症狀分析、AI 問答
 - AI 問答：RAG（Gemini embedding + 2.5 Flash），Function `/api/ask`
-- 症狀分析（BodyCheck）：`src/data/symptoms.js` 規則引擎，41 症狀 / 21 規則
+- 症狀分析（BodyCheck）：`src/data/symptoms.js` 規則引擎，41 症狀 / 23 規則
 - 相片辨識：`/api/identify` Function，Gemini Vision 從精選 20 種辨識藥品照片
+- 流行疾病動態：衛教資訊頁藍框下方新增區塊，`src/data/trending.js` +
+  `src/components/TrendingPanel.jsx`，前 6 名疾病含 SVG 雷達圖、行為建議卡、
+  社群擴散防護、高風險族群/區域、傳染途徑、典型症狀（來源 `attention_disparity_index.json`）
 
 ## 待辦 / 下一步
 
