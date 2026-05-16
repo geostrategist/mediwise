@@ -40,12 +40,26 @@ try {
 
 // Optional NHI import. Disabled by default to save free-tier quota (3000+ chunks).
 // Enable with: INCLUDE_NHI=1 npm run embeddings
+// 預設只嵌入「有健保支付價（price > 0）」的品項，跳過未列價格者以控制語料庫
+// 大小；設 INCLUDE_NHI_UNPRICED=1 可改為納入全部 NHI 品項。
 let nhiChunks = []
 if (process.env.INCLUDE_NHI === '1') {
   const NHI_PATH = resolve(__dirname, 'cache/nhi-drugs.json')
   try {
     nhiChunks = JSON.parse(readFileSync(NHI_PATH, 'utf8'))
-    console.log(`Loaded ${nhiChunks.length} NHI chunks from ${NHI_PATH} (INCLUDE_NHI=1)`)
+    if (process.env.INCLUDE_NHI_UNPRICED !== '1') {
+      const UI_PATH = resolve(ROOT, 'public/nhi-drugs.json')
+      const pricedIds = new Set(
+        JSON.parse(readFileSync(UI_PATH, 'utf8'))
+          .filter(d => Number(d.price) > 0)
+          .map(d => d.id),
+      )
+      const before = nhiChunks.length
+      nhiChunks = nhiChunks.filter(c => pricedIds.has(c.id))
+      console.log(`Loaded ${nhiChunks.length} NHI chunks (INCLUDE_NHI=1; filtered to price>0, skipped ${before - nhiChunks.length} unpriced)`)
+    } else {
+      console.log(`Loaded ${nhiChunks.length} NHI chunks from ${NHI_PATH} (INCLUDE_NHI=1, INCLUDE_NHI_UNPRICED=1)`)
+    }
   } catch {
     console.log(`(INCLUDE_NHI=1 but no NHI cache; run \`npm run import-nhi\` first)`)
   }
