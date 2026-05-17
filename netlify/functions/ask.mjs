@@ -57,12 +57,21 @@ async function generate(prompt, apiKey) {
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify({
       contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { temperature: 0.2, maxOutputTokens: 1024 },
+      generationConfig: {
+        temperature: 0.2,
+        maxOutputTokens: 2048,
+        // Gemini 2.5 Flash 預設會花「思考」token，會吃掉 maxOutputTokens 額度
+        // 導致回答被截斷在句中。此 RAG 任務答案已由來源接地，關閉思考即可。
+        thinkingConfig: { thinkingBudget: 0 },
+      },
     }),
   })
   if (!res.ok) throw new Error(`generate ${res.status}: ${await res.text()}`)
   const json = await res.json()
-  return json.candidates?.[0]?.content?.parts?.[0]?.text ?? '(無回應)'
+  const cand = json.candidates?.[0]
+  const text = cand?.content?.parts?.map(p => p.text).filter(Boolean).join('') ?? ''
+  if (!text) throw new Error(`generate: 空回應（finishReason=${cand?.finishReason ?? '未知'}）`)
+  return text
 }
 
 const TYPE_LABEL = {
