@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect, useRef } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { drugs, drugCategories, drugTags } from '../data/drugs'
 import DrugModal from '../components/DrugModal'
 import TfdaDrugModal from '../components/TfdaDrugModal'
@@ -31,7 +32,7 @@ function fileToCompressedBase64(file, maxDim = 1024, quality = 0.8) {
   })
 }
 
-function CuratedDrugsTab() {
+function CuratedDrugsTab({ focusId }) {
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState('全部')
   const [tag, setTag] = useState('全部')
@@ -39,6 +40,13 @@ function CuratedDrugsTab() {
   const [identifying, setIdentifying] = useState(false)
   const [identifyMsg, setIdentifyMsg] = useState(null)
   const fileInputRef = useRef(null)
+
+  // 由 AI 問答來源深連結（?focus=drug-N）開啟對應藥品詳情
+  useEffect(() => {
+    if (!focusId) return
+    const d = drugs.find(x => `drug-${x.id}` === focusId)
+    if (d) setSelected(d)
+  }, [focusId])
 
   async function handlePhoto(e) {
     const file = e.target.files?.[0]
@@ -234,7 +242,7 @@ function CuratedDrugsTab() {
   )
 }
 
-function TfdaDrugsTab() {
+function TfdaDrugsTab({ focusId }) {
   const [allDrugs, setAllDrugs] = useState(null)
   const [loadError, setLoadError] = useState(null)
   const [query, setQuery] = useState('')
@@ -251,6 +259,13 @@ function TfdaDrugsTab() {
       .then(setAllDrugs)
       .catch(err => setLoadError(String(err.message ?? err)))
   }, [])
+
+  // 由 AI 問答來源深連結（?focus=tfda-N）開啟對應藥品詳情
+  useEffect(() => {
+    if (!focusId || !allDrugs) return
+    const d = allDrugs.find(x => x.id === focusId)
+    if (d) setSelected(d)
+  }, [focusId, allDrugs])
 
   const filtered = useMemo(() => {
     if (!allDrugs) return []
@@ -418,7 +433,7 @@ function TfdaDrugsTab() {
   )
 }
 
-function NhiDrugsTab() {
+function NhiDrugsTab({ focusId }) {
   const [allDrugs, setAllDrugs] = useState(null)
   const [loadError, setLoadError] = useState(null)
   const [query, setQuery] = useState('')
@@ -435,6 +450,13 @@ function NhiDrugsTab() {
       .then(setAllDrugs)
       .catch(err => setLoadError(String(err.message ?? err)))
   }, [])
+
+  // 由 AI 問答來源深連結（?focus=nhi-N）開啟對應藥品詳情
+  useEffect(() => {
+    if (!focusId || !allDrugs) return
+    const d = allDrugs.find(x => x.id === focusId)
+    if (d) setSelected(d)
+  }, [focusId, allDrugs])
 
   const filtered = useMemo(() => {
     if (!allDrugs) return []
@@ -605,7 +627,16 @@ function NhiDrugsTab() {
 }
 
 export default function DrugInfo() {
-  const [tab, setTab] = useState('curated')
+  const [searchParams] = useSearchParams()
+  const focus = searchParams.get('focus') // 例：drug-7 / tfda-131 / nhi-1（來自 AI 問答來源）
+  const focusTab = focus?.startsWith('tfda-')
+    ? 'tfda'
+    : focus?.startsWith('nhi-')
+      ? 'nhi'
+      : focus?.startsWith('drug-')
+        ? 'curated'
+        : null
+  const [tab, setTab] = useState(focusTab ?? 'curated')
 
   return (
     <div className="page-wrapper">
@@ -628,7 +659,13 @@ export default function DrugInfo() {
           </button>
         </div>
 
-        {tab === 'curated' ? <CuratedDrugsTab /> : tab === 'tfda' ? <TfdaDrugsTab /> : <NhiDrugsTab />}
+        {tab === 'curated' ? (
+          <CuratedDrugsTab focusId={focusTab === 'curated' ? focus : null} />
+        ) : tab === 'tfda' ? (
+          <TfdaDrugsTab focusId={focusTab === 'tfda' ? focus : null} />
+        ) : (
+          <NhiDrugsTab focusId={focusTab === 'nhi' ? focus : null} />
+        )}
 
         <div
           style={{

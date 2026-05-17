@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const SAMPLE_QUESTIONS = [
   '我頭痛又發燒，普拿疼跟布洛芬哪個比較適合？',
@@ -18,6 +19,13 @@ export default function Ask() {
   const [loading, setLoading] = useState(false)
   const [history, setHistory] = useState([]) // [{ q, answer, sources, error? }]
   const endRef = useRef(null)
+  const navigate = useNavigate()
+
+  // 點擊來源 → 深連結到該藥品/疾病的詳細資訊頁並開啟詳情
+  const openSource = (s) => {
+    const path = s.type === 'disease' ? '/health' : '/drugs'
+    navigate(`${path}?focus=${encodeURIComponent(s.id)}`)
+  }
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -156,7 +164,7 @@ export default function Ask() {
                     {t.sources?.length > 0 && (
                       <div style={{ marginTop: '0.85rem', paddingTop: '0.85rem', borderTop: '1px dashed #e2e8f0' }}>
                         <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 600, marginBottom: '0.4rem' }}>
-                          📚 引用來源（依相關度排序）
+                          📚 引用來源（依相關度排序・點擊可查看詳細資訊）
                         </div>
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
                           {t.sources.map((s, idx) => {
@@ -164,10 +172,13 @@ export default function Ask() {
                               'drug':       { bg: '#f0fdfa', fg: '#0f766e', border: '#99f6e4', icon: '💊', tag: '精選' },
                               'disease':    { bg: '#eff6ff', fg: '#1d4ed8', border: '#bfdbfe', icon: '🏥', tag: '疾病' },
                               'tfda-drug':  { bg: '#fef3c7', fg: '#92400e', border: '#fde68a', icon: '📋', tag: '食藥署' },
+                              'nhi-drug':   { bg: '#eef2ff', fg: '#3730a3', border: '#c7d2fe', icon: '🏥', tag: '健保' },
                             }[s.type] ?? { bg: '#f1f5f9', fg: '#475569', border: '#cbd5e1', icon: '📄', tag: '' }
                             return (
-                              <span
+                              <button
                                 key={s.id}
+                                onClick={() => openSource(s)}
+                                className="source-chip"
                                 style={{
                                   fontSize: '0.72rem',
                                   padding: '0.25rem 0.65rem',
@@ -175,11 +186,13 @@ export default function Ask() {
                                   color: styleByType.fg,
                                   border: `1px solid ${styleByType.border}`,
                                   borderRadius: '999px',
+                                  cursor: 'pointer',
+                                  fontFamily: 'inherit',
                                 }}
-                                title={`${styleByType.tag}｜相似度：${s.score}`}
+                                title={`${styleByType.tag}｜相似度：${s.score}｜點擊查看詳細資訊`}
                               >
-                                [{idx + 1}] {styleByType.icon} {s.name}
-                              </span>
+                                [{idx + 1}] {styleByType.icon} {s.name} ↗
+                              </button>
                             )
                           })}
                         </div>

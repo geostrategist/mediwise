@@ -182,6 +182,11 @@ function TrendingModal({ disease, onClose }) {
             <div className="reason-title">📈 為何上榜</div>
             <p>{disease.attentionReason}</p>
             <p className="reason-summary">{disease.shortSummary}</p>
+            {disease.cdcLink && (
+              <a className="cdc-link" href={disease.cdcLink} target="_blank" rel="noreferrer">
+                🔗 查看疾管署即時疫情統計（NIDSS）
+              </a>
+            )}
           </div>
 
           {/* 1. 區域風險雷達 */}

@@ -72,6 +72,21 @@ export default function DrugModal({ drug, onClose }) {
             </ul>
           </div>
 
+          {drug.adherence?.length > 0 && (
+            <div className="adherence-box">
+              <div className="adherence-title">🎯 主動式遵從性引導</div>
+              <p className="adherence-intro">
+                把藥用對、用滿，療效才完整——以下提醒幫助你正確完成療程：
+              </p>
+              {drug.adherence.map((a, i) => (
+                <div key={i} className="adherence-item">
+                  <div className="adherence-item-title">✓ {a.title}</div>
+                  <div className="adherence-item-desc">{a.desc}</div>
+                </div>
+              ))}
+            </div>
+          )}
+
           <div className="warning-box">
             <span>⚠️</span>
             <span><strong>注意事項：</strong>{drug.warnings}</span>

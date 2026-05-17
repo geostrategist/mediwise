@@ -6,27 +6,67 @@ export default function Home() {
       {/* Hero */}
       <section className="hero">
         <div className="container hero-content">
-          <div className="hero-badge">
-            🤖 AI for a Better Future・成淵高中
-          </div>
-          <h1>
-            AI 讓健康資訊<br />
-            <span>觸手可及</span>
-          </h1>
-          <p className="hero-desc">
-            提供台灣民眾準確的藥品資訊、衛教知識與症狀初步分析，
-            以 AI 輔助健康決策，讓每個人都能做出更明智的醫療選擇。
-          </p>
-          <div className="hero-actions">
-            <Link to="/drugs" className="btn btn-primary btn-lg">
-              💊 查詢藥品資訊
-            </Link>
-            <Link to="/check" className="btn btn-outline btn-lg">
-              🩺 症狀自我分析
-            </Link>
-          </div>
-          <div className="hero-disclaimer">
-            ⚠️ 本工具僅供教育參考，不取代專業醫療建議
+          <div className="hero-grid">
+            <div className="hero-main">
+              <div className="hero-badge">
+                🤖 AI for a Better Future・成淵高中
+              </div>
+              <h1>
+                AI 讓健康資訊<br />
+                <span>觸手可及</span>
+              </h1>
+              <p className="hero-desc">
+                提供台灣民眾準確的藥品資訊、衛教知識與症狀初步分析，
+                以 AI 輔助健康決策，讓每個人都能做出更明智的醫療選擇。
+              </p>
+              <div className="hero-actions">
+                <Link to="/drugs" className="btn btn-primary btn-lg">
+                  💊 查詢藥品資訊
+                </Link>
+                <Link to="/check" className="btn btn-outline btn-lg">
+                  🩺 症狀自我分析
+                </Link>
+              </div>
+              <div className="hero-disclaimer">
+                ⚠️ 本工具僅供教育參考，不取代專業醫療建議
+              </div>
+            </div>
+
+            {/* Cover panel */}
+            <div className="hero-cover">
+              <svg className="hero-cover-deco" viewBox="0 0 360 120" fill="none" aria-hidden="true">
+                <path
+                  d="M0 70 H96 L112 70 L126 30 L142 104 L158 52 L172 70 H236 L250 70 L262 44 L274 88 L286 70 H360"
+                  stroke="rgba(255,255,255,0.55)" strokeWidth="2.5"
+                  strokeLinecap="round" strokeLinejoin="round"
+                />
+                <circle cx="142" cy="104" r="4" fill="#a7f3d0" />
+                <circle cx="320" cy="28" r="22" stroke="rgba(255,255,255,0.18)" strokeWidth="2" />
+                <circle cx="36" cy="26" r="11" stroke="rgba(255,255,255,0.22)" strokeWidth="2" />
+                <path d="M308 96 h10 m-5 -5 v10" stroke="rgba(255,255,255,0.3)" strokeWidth="3" strokeLinecap="round" />
+              </svg>
+
+              <div className="hero-cover-kicker">🚀 立即行動</div>
+              <h2 className="hero-cover-title">
+                為您的健康領航<br />
+                <span>搶先體驗智慧醫藥導航</span>
+              </h2>
+
+              <div className="hero-cover-feats">
+                <span className="hero-feat">💊 藥品查詢</span>
+                <span className="hero-feat">📖 衛教知識</span>
+                <span className="hero-feat">🩺 症狀分析</span>
+              </div>
+
+              <div className="hero-cover-slogan">
+                讓健康資訊更簡單，讓用藥理由更透明
+              </div>
+
+              <div className="hero-cover-quote">
+                現有系統解決了「資訊透明」，<br />
+                而智醫未來進一步解決「<strong>資訊理解</strong>」與「<strong>決策支持</strong>」。
+              </div>
+            </div>
           </div>
         </div>
       </section>

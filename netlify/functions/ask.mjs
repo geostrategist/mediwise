@@ -65,8 +65,15 @@ async function generate(prompt, apiKey) {
   return json.candidates?.[0]?.content?.parts?.[0]?.text ?? '(無回應)'
 }
 
+const TYPE_LABEL = {
+  drug: '藥品',
+  disease: '疾病',
+  'tfda-drug': '藥品（食藥署 OTC）',
+  'nhi-drug': '健保藥品',
+}
+
 function buildPrompt(question, hits) {
-  const context = hits.map((h, i) => `--- 來源 [${i + 1}] ${h.type === 'drug' ? '藥品' : '疾病'}：${h.name} ---\n${h.text}`).join('\n\n')
+  const context = hits.map((h, i) => `--- 來源 [${i + 1}] ${TYPE_LABEL[h.type] ?? '資料'}：${h.name} ---\n${h.text}`).join('\n\n')
   return `你是台灣健康資訊助理。請僅依據以下「來源」內容回答使用者問題。
 
 **強制規則**（違反必須拒答）：
@@ -75,6 +82,11 @@ function buildPrompt(question, hits) {
 3. 結尾必須加上一行：「⚠️ 本回答僅供教育參考，不取代醫師、藥師專業建議。如有疑慮請就醫。」
 4. 不得提供處方建議、不得指示使用劑量超出來源所述範圍。
 5. 使用繁體中文回答。
+
+**回答方式**（讓使用者「看得懂、知道為什麼」）：
+6. 不要只給結論。每個說法都要依來源說明「為什麼」——例如該藥的作用機轉、適應症、適用或不適用的情況、注意事項。
+7. 若問題在比較或詢問「哪個比較適合」，請逐一比較各選項：依來源列出各自的作用、適應症與差異，並說明在不同情況下的考量重點；最後須提醒最終選擇取決於個人病況，應由醫師或藥師判斷。
+8. 適度分段或條列，讓內容清楚易讀；但所有內容仍須源自來源並標註來源編號。
 
 ==========來源==========
 ${context}

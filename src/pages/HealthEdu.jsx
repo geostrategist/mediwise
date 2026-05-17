@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { diseases, nhiPolicies } from '../data/diseases'
 import TrendingPanel from '../components/TrendingPanel'
 
@@ -75,8 +76,19 @@ function DiseaseModal({ disease, onClose }) {
 }
 
 export default function HealthEdu() {
+  const [searchParams] = useSearchParams()
+  const focus = searchParams.get('focus') // 例：disease-3（來自 AI 問答來源深連結）
   const [tab, setTab] = useState('diseases')
   const [selectedDisease, setSelectedDisease] = useState(null)
+
+  useEffect(() => {
+    if (!focus?.startsWith('disease-')) return
+    const d = diseases.find(x => `disease-${x.id}` === focus)
+    if (d) {
+      setTab('diseases')
+      setSelectedDisease(d)
+    }
+  }, [focus])
 
   return (
     <div className="page-wrapper">
