@@ -8,16 +8,64 @@ const SAMPLE_QUESTIONS = [
   '高血壓平常要注意什麼？台灣健保有給付什麼藥？',
 ]
 
+// 解析行內 **粗體**（Gemini 回答常用的 Markdown）
+function parseInline(text, keyPrefix) {
+  return text.split(/(\*\*[^*]+\*\*)/g).map((part, i) => {
+    if (part.startsWith('**') && part.endsWith('**')) {
+      return <strong key={`${keyPrefix}-${i}`}>{part.slice(2, -2)}</strong>
+    }
+    return part
+  })
+}
+
+// 將 Gemini 回答的 Markdown（粗體、項目符號）渲染成 HTML
 function renderAnswer(text) {
-  return text.split('\n').map((line, i) => (
-    <p key={i} style={{ margin: '0 0 0.5rem', lineHeight: 1.7 }}>{line || ' '}</p>
-  ))
+  const blocks = []
+  let list = null
+  for (const raw of text.split('\n')) {
+    const line = raw.trimEnd()
+    const bullet = line.match(/^\s*[*-]\s+(.*)$/)
+    if (bullet) {
+      if (!list) { list = []; blocks.push({ type: 'ul', items: list }) }
+      list.push(bullet[1])
+      continue
+    }
+    list = null
+    blocks.push(line.trim() === '' ? { type: 'space' } : { type: 'p', text: line })
+  }
+  return blocks.map((b, i) => {
+    if (b.type === 'ul') {
+      return (
+        <ul key={i} className="ans-list">
+          {b.items.map((it, j) => <li key={j}>{parseInline(it, `${i}-${j}`)}</li>)}
+        </ul>
+      )
+    }
+    if (b.type === 'space') return <div key={i} style={{ height: '0.45rem' }} />
+    return (
+      <p key={i} style={{ margin: '0 0 0.5rem', lineHeight: 1.7 }}>
+        {parseInline(b.text, i)}
+      </p>
+    )
+  })
+}
+
+// 對話紀錄存入 sessionStorage：點來源離開頁面後返回，仍看得到先前的回答
+const HISTORY_KEY = 'mediwise-ask-history'
+function loadHistory() {
+  try {
+    const saved = JSON.parse(sessionStorage.getItem(HISTORY_KEY) || '[]')
+    // 丟掉離開頁面時尚未完成的回合（只有問題、沒有答案）
+    return Array.isArray(saved) ? saved.filter(t => t.answer || t.error) : []
+  } catch {
+    return []
+  }
 }
 
 export default function Ask() {
   const [question, setQuestion] = useState('')
   const [loading, setLoading] = useState(false)
-  const [history, setHistory] = useState([]) // [{ q, answer, sources, error? }]
+  const [history, setHistory] = useState(loadHistory) // [{ q, answer, sources, error? }]
   const endRef = useRef(null)
   const navigate = useNavigate()
 
@@ -30,6 +78,15 @@ export default function Ask() {
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [history, loading])
+
+  // 對話更新即存檔，返回頁面時可還原
+  useEffect(() => {
+    try {
+      sessionStorage.setItem(HISTORY_KEY, JSON.stringify(history))
+    } catch {
+      /* sessionStorage 不可用時略過 */
+    }
+  }, [history])
 
   async function submit(q) {
     const query = (q ?? question).trim()

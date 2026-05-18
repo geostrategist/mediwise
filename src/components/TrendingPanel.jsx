@@ -119,7 +119,7 @@ function TrendingCard({ disease, onOpen }) {
       </div>
 
       <div className="trending-mini-radar">
-        <RadarChart values={disease.radar} color={cat.color} size={132} showLabels={false} />
+        <RadarChart values={disease.radar} color={cat.color} size={206} showLabels={true} />
       </div>
 
       <div className="trending-meta-row">

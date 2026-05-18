@@ -1877,6 +1877,17 @@ a:hover { color: var(--primary-dark); }
   color: #92400e;
 }
 
+/* AI 問答回答的 Markdown 項目清單 */
+.ans-list {
+  margin: 0.15rem 0 0.6rem;
+  padding-left: 1.35rem;
+}
+
+.ans-list li {
+  margin-bottom: 0.3rem;
+  line-height: 1.7;
+}
+
 /* AI 問答可點擊來源膠囊 */
 .source-chip {
   transition: transform var(--transition), box-shadow var(--transition), filter var(--transition);
